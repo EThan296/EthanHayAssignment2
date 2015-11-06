@@ -1,11 +1,23 @@
 BoxLayout:
     orientation: 'vertical'
-
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
     Label:
+        canvas.before:
+            Color:
+                rgba: .57, 1, .95, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
         id: lbl_current_location
         size_hint: (1,.4)
         text: 'current_location'
-        color: (1, 1, 1, 1)
+        font_size: 24
+        color: (0, 0, 0, 1)
 
 
 
@@ -13,31 +25,80 @@ BoxLayout:
         orientation: 'horizontal'
         size_hint: (1,.3)
         Spinner:
+            id: country_spinner
+            font_size:18
+            values: app.country_list
+            on_text: app.change_country(self.text)
         TextInput:
-            disabled: true
+            id: txt_foreign_amount
+            text: '0'
+            font_size:35
+            multiline: False
+            on_text_validate: app.load_currency("foreign")
+            on_text: app.clear_error_lbl()
 
     BoxLayout
         orientation: 'horizontal'
         size_hint: (1,.3)
         Label:
+            canvas.before:
+                Color:
+                    rgba: .16, .9, .8, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
             id: lbl_home_country
-            text: 'home_county'
-            color: (1, 1, 1, 1)
-            background_color: (1,1,1,1)
+            text: 'home'
+            font_size:18
+            color: (0, 0, 0 , 1)
         TextInput:
-
+            id: txt_home_amount
+            text: '0'
+            font_size:35
+            multiline: False
+            on_text_validate: app.load_currency("home")
+            on_text: app.clear_error_lbl()
 
     Label:
+        canvas.before:
+            Color:
+                rgba: .16, .9, .8, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        id: lbl_date
         text: 'Today is:'
+        font_size:18
         font_size: 25
-        background_color: (1,1,1,1)
+        color: (0, 0, 0, 1)
 
     BoxLayout
         orientation: 'horizontal'
         size_hint: (1,.25)
-        Label:
-            id: lbl_status
-            text: 'No Error'
+        BoxLayout
+            orientation: 'vertical'
+            Label:
+                canvas.before:
+                    Color:
+                        rgba: .57, 1, .95, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                id: lbl_error
+                text: 'No Error'
+                color: (0, 0, 0, 1)
+            Label:
+                canvas.before:
+                    Color:
+                        rgba: .57, 1, .95, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                id: lbl_status
+                text: 'No Status'
+                color: (0, 0, 0, 1)
         Button:
             text: 'Update Currency'
+            font_size:18
             background_color: (1,1,1,1)
+            on_press: app.load_data()
